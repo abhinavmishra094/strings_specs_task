@@ -1,10 +1,14 @@
 package main
 
 import (
+	"fmt"
+	"math/rand"
 	"strconv"
 	"strings"
+	"time"
 )
 
+// complexity Medium, time O(N)
 func testValidity(input string) bool {
 	words := strings.Split(input, "-")
 	wCount := 0
@@ -26,6 +30,7 @@ func testValidity(input string) bool {
 	return true
 }
 
+// complexity Easy, time O(N)
 func averageNumber(inp string) float32 {
 	words := strings.Split(inp, "-")
 	nCount := 0
@@ -39,6 +44,7 @@ func averageNumber(inp string) float32 {
 	return float32(sum) / float32(nCount)
 }
 
+// complexity easy, time O(N)
 func wholeStory(inp string) string {
 	words := strings.Split(inp, "-")
 	story := ""
@@ -52,6 +58,7 @@ func wholeStory(inp string) string {
 	return strings.TrimSpace(story)
 }
 
+// complexity Medium, time O(N)
 func storyStats(inp string) (string, string, float32, []string) {
 	words := strings.Split(inp, "-")
 	var shortestWord string
@@ -87,4 +94,34 @@ func storyStats(inp string) (string, string, float32, []string) {
 		}
 	}
 	return shortestWord, longestWord, avgWordLength, listWord
+}
+
+// complexity Medium, time O(N)
+func generate(isCorrect bool) string {
+	s1 := rand.NewSource(time.Now().UnixNano())
+	r1 := rand.New(s1)
+	numItems := r1.Intn(10) + 2
+	result := ""
+	for i := 0; i < numItems; i++ {
+		result += fmt.Sprintf("%d-%s-", r1.Intn(1000), randStringBytes(1+r1.Intn(10)))
+	}
+	if isCorrect {
+		return strings.Trim(result, "-")
+	} else {
+		return result + "----"
+	}
+}
+
+const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+func randStringBytes(n int) string {
+	b := make([]byte, n)
+	for i := range b {
+		b[i] = letterBytes[rand.Intn(len(letterBytes))]
+	}
+	return string(b)
+}
+func main() {
+	println(generate(true))
+	println(generate(false))
 }
